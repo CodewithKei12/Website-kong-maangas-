@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Web Developer Career Path — From vision to site</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS — edit colours / fonts here ===== */
+:root{--bg:#04070d;--ink:#e9eef7;--mut:#8593aa;--blue:#00a3ff;--cyan:#22e0f5;--warn:#ff4d6d;--line:rgba(255,255,255,.09);--card:rgba(11,17,29,.72);
+--sans:'Inter',system-ui,sans-serif;--serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);overflow-x:hidden;padding-bottom:56px}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,nav,footer{position:relative;z-index:2}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+#prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));z-index:50;box-shadow:0 0 12px var(--cyan)}
+/* nav */
+nav{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(1180px,calc(100% - 24px));z-index:40;display:flex;align-items:center;justify-content:space-between;padding:10px 14px 10px 20px;background:rgba(5,9,16,.72);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:12px}
+.logo{font:800 14px var(--sans);letter-spacing:.3em}.logo i{color:var(--cyan);font-style:normal}
+nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:15px}
+nav ul a{opacity:.75;transition:.2s}nav ul a:hover{opacity:1;color:var(--cyan)}
+.btn{display:inline-block;padding:13px 24px;border-radius:6px;font-weight:500;font-size:16px;border:1px solid rgba(0,163,255,.5);background:rgba(0,163,255,.08);transition:.25s;cursor:pointer;color:var(--ink);font-family:inherit}
+.btn.p{background:var(--blue);border-color:var(--blue);color:#02111f;font-weight:700;box-shadow:0 0 30px rgba(0,163,255,.35)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(34,224,245,.35)}
+.btn.g{border-color:var(--line);background:rgba(255,255,255,.03)}
+/* hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:130px 0 90px}
+.tag{display:inline-flex;gap:10px;align-items:center;margin-bottom:28px;color:var(--cyan)}
+.tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.3}}
+h1{font:800 clamp(46px,8.6vw,124px)/.95 var(--sans);letter-spacing:-.045em;margin:0 0 34px;background:linear-gradient(180deg,#fff 20%,#7d8aa0);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 em,h2 em{font:italic 400 1.08em var(--serif);letter-spacing:-.01em;background:linear-gradient(90deg,#1d7fe0,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.08em}
+.lead{max-width:560px;color:#a8b4c8;font-size:clamp(17px,1.6vw,20px)}
+.ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:38px}
+/* sections */
+section{padding:120px 0;position:relative}
+.head{margin-bottom:56px;max-width:760px}
+h2{font:800 clamp(36px,5.4vw,72px)/1 var(--sans);letter-spacing:-.04em;margin:14px 0 18px}
+.sub{color:#a8b4c8;max-width:620px;margin:0}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s,transform .9s}.rv.in{opacity:1;transform:none}
+/* cards */
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;backdrop-filter:blur(10px);overflow:hidden;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s,border-color .3s,box-shadow .3s;animation:drift 7s ease-in-out infinite alternate;animation-delay:var(--d,0s)}
+@keyframes drift{from{translate:0 -5px}to{translate:0 6px}}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(34,224,245,.2),transparent 60%);opacity:0;transition:.3s;pointer-events:none}
+.card:hover{border-color:rgba(34,224,245,.55);box-shadow:0 0 50px rgba(0,163,255,.2)}.card:hover::before{opacity:1}
+.card h3{font:700 22px/1.2 var(--sans);letter-spacing:-.02em;margin:10px 0 8px}
+.card p{margin:0;color:#a3afc3;font-size:15.5px}
+.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+/* overview */
+.over{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:center}
+.over p{font-size:clamp(20px,2.2vw,28px);line-height:1.45;letter-spacing:-.015em;color:#cfd8e8;margin:0}
+.stats{display:grid;gap:14px}.stats .card b{font:800 30px var(--sans);color:var(--cyan);display:block}
+/* skills constellation */
+.const{position:relative;height:560px}
+.const svg{position:absolute;inset:0;width:100%;height:100%}
+.const polyline{fill:none;stroke:rgba(34,224,245,.35);stroke-width:1;stroke-dasharray:4 6;vector-effect:non-scaling-stroke;animation:dash 12s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-100}}
+.const .card{position:absolute;width:230px;margin:-60px 0 0 -115px;left:var(--x);top:var(--y)}
+/* degrees */
+.deg{cursor:pointer;min-height:190px}
+.deg .more{max-height:0;opacity:0;transition:.5s;color:#bfe9ff;font-size:15px}
+.deg.open .more{max-height:160px;opacity:1;margin-top:14px}
+.deg.open{border-color:var(--cyan)}
+.note{border-left:2px solid var(--blue);padding:4px 0 4px 20px;margin:0 0 36px;font-size:19px;color:#cfd8e8;max-width:760px}
+/* orbit */
+.stage{position:relative;height:640px;margin:0 auto;max-width:1100px}
+.core{position:absolute;left:50%;top:50%;width:170px;height:170px;margin:-85px 0 0 -85px;border-radius:50%;display:grid;place-items:center;font:800 54px var(--mono);background:radial-gradient(circle,rgba(0,163,255,.35),rgba(0,163,255,.05) 65%,transparent 72%);box-shadow:0 0 120px rgba(0,163,255,.5);animation:pulse2 4s ease-in-out infinite;z-index:1}
+.core span{background:linear-gradient(135deg,#fff,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.08em}
+@keyframes pulse2{50%{transform:scale(1.08);box-shadow:0 0 170px rgba(34,224,245,.6)}}
+.ring{position:absolute;left:50%;top:50%;border:1px dashed rgba(255,255,255,.07);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+.orb{position:absolute;left:50%;top:50%;width:176px;padding:14px 16px;text-align:left;animation:none;cursor:pointer;color:var(--ink);font-family:var(--sans);will-change:transform}
+.orb b{display:block;font-size:16px;letter-spacing:-.01em}.orb small{font:500 10px var(--mono);letter-spacing:.14em;color:var(--blue);text-transform:uppercase}
+.orb.on{border-color:var(--cyan);box-shadow:0 0 40px rgba(34,224,245,.5)}
+.orb.k-Skill small{color:var(--cyan)}.orb.k-Challenge small{color:var(--warn)}.orb.k-Value small{color:#9d8cff}
+.det{max-width:640px;margin:26px auto 0;text-align:center;min-height:90px;color:#cfd8e8}.det b{color:var(--cyan)}
+/* values */
+.ico{width:44px;height:44px;color:var(--cyan)}
+.ico *{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.card:hover .ico{animation:spin 3s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+/* challenges */
+.hot{background:rgba(22,6,12,.8);border-color:rgba(255,77,109,.3)}
+.hot::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,77,109,.06) 0 1px,transparent 1px 4px);pointer-events:none;animation:scan 5s linear infinite}
+@keyframes scan{to{background-position:0 40px}}
+.hot:hover{border-color:var(--warn);box-shadow:0 0 50px rgba(255,77,109,.25)}.hot::before{background:radial-gradient(260px circle at var(--mx) var(--my),rgba(255,77,109,.22),transparent 60%)}
+.hot .mono{color:var(--warn)}
+.hot:hover h3{animation:glitch .4s steps(2) 2}
+@keyframes glitch{0%{text-shadow:3px 0 var(--warn),-3px 0 var(--cyan);transform:translateX(-2px)}50%{text-shadow:-3px 0 var(--warn),3px 0 var(--cyan);transform:translateX(2px)}100%{text-shadow:none}}
+/* advice */
+.adv{display:grid;gap:0;max-width:900px}
+.adv div{display:flex;gap:28px;align-items:baseline;padding:30px 0;border-top:1px solid var(--line);transition:.3s}
+.adv div:last-child{border-bottom:1px solid var(--line)}
+.adv div:hover{padding-left:16px;border-color:var(--cyan)}
+.adv b{font:800 clamp(28px,4vw,52px) var(--sans);letter-spacing:-.035em}.adv span{color:#a3afc3;max-width:380px}
+/* chrome */
+#bar{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;gap:26px;align-items:center;padding:14px 24px calc(14px + env(safe-area-inset-bottom,0px));background:rgba(4,7,13,.82);backdrop-filter:blur(10px);border-top:1px solid var(--line);white-space:nowrap;overflow:hidden}
+#bar b{color:var(--ink);font-weight:500}#bar .r{margin-left:auto}
+#tip{position:fixed;left:0;top:0;z-index:30;pointer-events:none;font:500 11px var(--mono);padding:6px 10px;background:rgba(5,12,22,.85);border:1px solid rgba(0,163,255,.5);color:var(--cyan);border-radius:3px;white-space:nowrap}
+footer{padding:60px 0 40px;text-align:center}
+@media(max-width:860px){nav ul{display:none}.over{grid-template-columns:1fr}.const{height:auto;display:grid;gap:16px}.const svg{display:none}.const .card{position:relative;left:auto;top:auto;margin:0;width:auto}
+.stage{height:560px}.orb{width:132px;padding:10px 12px}.orb b{font-size:13px}.core{width:110px;height:110px;margin:-55px 0 0 -55px;font-size:34px}
+#bar .h{display:none}.adv div{flex-direction:column;gap:8px}#tip{display:none}section{padding:80px 0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+<div id="prog"></div><div id="tip">SIG-F565 · idle · 0.00</div>
+
+<nav>
+  <a class="logo" href="#top">DEV<i>/</i>PATH</a>
+  <ul><li><a href="#overview">Overview</a></li><li><a href="#skills">Skills</a></li><li><a href="#academic">Academics</a></li><li><a href="#core">Core</a></li><li><a href="#values">Values</a></li><li><a href="#challenges">Challenges</a></li><li><a href="#advice">Advice</a></li></ul>
+  <a class="btn" href="#advice">Start building</a>
+</nav>
+
+<main id="top">
+<!-- ===== HERO ===== -->
+<header class="hero" data-fig="01 · LIVE SIGNAL FIELD"><div class="wrap">
+  <div class="tag mono">Early access · Web developer career path</div>
+  <h1 id="h1">From vision<br>to site, I make it <em>bright.</em></h1>
+  <p class="lead">A web developer designs, builds, and maintains websites and web applications that are functional, secure, and user-friendly.</p>
+  <div class="ctas"><a class="btn p" href="#overview">Explore the path →</a><a class="btn g" href="#skills">See the skills</a></div>
+</div></header>
+
+<!-- ===== 1. OVERVIEW · KEI ===== -->
+<section id="overview" data-fig="02 · CAREER OVERVIEW"><div class="wrap">
+  <div class="head rv"><span class="mono">Career overview · Kei</span><h2>What a web developer <em>does.</em></h2></div>
+  <div class="over rv">
+    <p>Web developers turn ideas into living websites. They write the code that shapes how a page looks, how it responds, and how safely it holds people's data, then keep it fast, secure, and current long after launch.</p>
+    <div class="stats"><div class="card"><b>Design</b>Layouts that feel intuitive</div><div class="card"><b>Build</b>Front-end and back-end code</div><div class="card"><b>Maintain</b>Updates, fixes, and security</div></div>
+  </div>
+</div></section>
+
+<!-- ===== 2. SKILLS · PERRY ===== -->
+<section id="skills" data-fig="03 · SKILLS NEEDED"><div class="wrap">
+  <div class="head rv"><span class="mono">Skills needed · Perry</span><h2>Five skills, one <em>constellation.</em></h2><p class="sub">Move your cursor over a card. Each skill tilts toward you and lights up its neighbours.</p></div>
+  <div class="const rv">
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="15,24 50,10 85,26 70,76 28,72 15,24 85,26"/></svg>
+    <div class="card" style="--x:15%;--y:24%"><span class="mono">Skill 1</span><h3>Logical Thinking</h3><p>Breaking features into clear, ordered steps a computer can follow.</p></div>
+    <div class="card" style="--x:50%;--y:10%;--d:-2s"><span class="mono">Skill 2</span><h3>Mathematical Skills</h3><p>Algorithms, layouts, and data all lean on solid number sense.</p></div>
+    <div class="card" style="--x:85%;--y:26%;--d:-4s"><span class="mono">Skill 3</span><h3>Wide Knowledge about Programming</h3><p>Languages, frameworks, and tools — the broader the toolbox, the better the fit.</p></div>
+    <div class="card" style="--x:28%;--y:72%;--d:-1s"><span class="mono">Skill 4</span><h3>Critical Thinking</h3><p>Questioning assumptions and weighing options before committing code.</p></div>
+    <div class="card" style="--x:70%;--y:76%;--d:-3s"><span class="mono">Skill 5</span><h3>Problem Solving</h3><p>Tracing a bug to its root and shipping the fix.</p></div>
+  </div>
+</div></section>
+
+<!-- ===== 3. ACADEMIC · BON ===== -->
+<section id="academic" data-fig="04 · ACADEMIC REQUIREMENTS"><div class="wrap">
+  <div class="head rv"><span class="mono">Academic requirements · Bon</span><h2>The classroom <em>route.</em></h2></div>
+  <p class="note rv">There is no strict academic requirement, however employers prefer candidates with a bachelor's degree and relevant training.</p>
+  <div class="grid rv">
+    <div class="card deg" tabindex="0" role="button"><span class="mono">Degree</span><h3>Bachelor of Science in Computer Science</h3><p>Click to expand</p><div class="more">Theory-heavy: algorithms, data structures, and software design that make you adaptable to any stack.</div></div>
+    <div class="card deg" tabindex="0" role="button" style="--d:-2s"><span class="mono">Degree</span><h3>Bachelor of Science in Information Technology</h3><p>Click to expand</p><div class="more">Practice-focused: networks, databases, web systems, and the day-to-day work of keeping sites running.</div></div>
+    <div class="card deg" tabindex="0" role="button" style="--d:-4s"><span class="mono">Degree</span><h3>Bachelor of Science in Computer Engineering</h3><p>Click to expand</p><div class="more">Where hardware meets software: a strong base for performance, systems, and connected devices.</div></div>
+  </div>
+</div></section>
+
+<!-- ===== 4. CORE COMPETENCIES (orbit) ===== -->
+<section id="core" data-fig="05 · CORE COMPETENCIES"><div class="wrap">
+  <div class="head rv"><span class="mono">Core competencies beyond degrees</span><h2>The tools that <em>orbit</em> the craft.</h2><p class="sub">Hover to pause a card. Click one to read more.</p></div>
+  <div class="stage" id="st1"><div class="core"><span>&lt;/&gt;</span></div></div>
+  <div class="det" id="d1">Pick a card to see what it does.</div>
+</div></section>
+
+<!-- ===== 5. VALUES · JAKE ===== -->
+<section id="values" data-fig="06 · VALUES"><div class="wrap">
+  <div class="head rv"><span class="mono">Values · Jake</span><h2>What good developers <em>hold onto.</em></h2></div>
+  <div class="grid rv">
+    <div class="card"><svg class="ico" viewBox="0 0 48 48"><path d="M24 6a12 12 0 0 0-6 22v6h12v-6a12 12 0 0 0-6-22z"/><path d="M19 40h10M21 44h6"/></svg><h3>Creativity</h3><p>Coming up with unique and appealing website designs and ideas.</p></div>
+    <div class="card" style="--d:-2s"><svg class="ico" viewBox="0 0 48 48"><circle cx="20" cy="20" r="12"/><path d="M29 29l13 13M15 20l4 4 7-8"/></svg><h3>Problem-Solving</h3><p>Finding the solutions when there are errors or problems in the website.</p></div>
+    <div class="card" style="--d:-4s"><svg class="ico" viewBox="0 0 48 48"><circle cx="14" cy="16" r="6"/><circle cx="34" cy="16" r="6"/><path d="M4 38c0-8 5-12 10-12s10 4 10 12M24 38c0-8 5-12 10-12s10 4 10 12"/></svg><h3>Teamwork</h3><p>Working well with the designers and developers and other people to create a successful working website.</p></div>
+  </div>
+</div></section>
+
+<!-- ===== 6. CHALLENGES · ELAH ===== -->
+<section id="challenges" data-fig="07 · SIGNAL INTERFERENCE"><div class="wrap">
+  <div class="head rv"><span class="mono">Challenges · Elah</span><h2>Noise on the <em>line.</em></h2></div>
+  <div class="grid rv">
+    <div class="card hot"><span class="mono">Interference A</span><h3>Fast-paced technological shifts</h3><p>Overcoming fast-paced technological shifts, especially with the emergence of AI.</p></div>
+    <div class="card hot" style="--d:-2s"><span class="mono">Interference B</span><h3>Market saturation</h3><p>Beginner portfolios start to look the same, so standing out takes real originality.</p></div>
+    <div class="card hot" style="--d:-4s"><span class="mono">Interference C</span><h3>Performance &amp; security pressure</h3><p>High-pressure performance and security demands, including constant cybersecurity threats.</p></div>
+  </div>
+</div></section>
+
+<!-- ===== 7. ADVICE · PIA ===== -->
+<section id="advice" data-fig="08 · ADVICE FOR STUDENTS"><div class="wrap">
+  <div class="head rv"><span class="mono">Advice for students · Pia</span><h2>Three habits that <em>compound.</em></h2></div>
+  <div class="adv rv">
+    <div><b>Practice regularly.</b><span>Code a little every day. Small, steady reps beat occasional marathons.</span></div>
+    <div><b>Keep learning.</b><span>Tools change fast. Follow the changes, especially AI, and stay curious.</span></div>
+    <div><b>Be creative and build a portfolio.</b><span>Ship real projects with your own voice so your work never looks like everyone else's.</span></div>
+  </div>
+</div></section>
+
+<!-- ===== SPECIAL: THE DEVELOPER STACK ===== -->
+<section id="stack" data-fig="09 · THE DEVELOPER STACK"><div class="wrap">
+  <div class="head rv"><span class="mono">The developer stack</span><h2>What's on the <em>shelf.</em></h2><p class="sub">Skills, values, tech, and challenges, all in orbit. Click any card to expand it.</p></div>
+  <div class="stage" id="st2" style="height:720px"><div class="core"><span>&lt;/&gt;</span></div></div>
+  <div class="det" id="d2">Pick a card to see what it does.</div>
+</div></section>
+</main>
+
+<footer class="mono">Web developer career path · Kei · Perry · Bon · Jake · Elah · Pia</footer>
+
+<div id="bar" class="mono">
+  <span id="fig">FIG. 01 — LIVE SIGNAL FIELD</span><span class="h">Move your cursor. That's a signal.</span>
+  <span class="h">X <b id="bx">0.000</b> Y <b id="by">0.000</b></span><span>Events <b id="be">000000</b></span>
+  <span class="r">Scroll <b id="bs">0%</b> · Sent off-device <b>0</b></span>
+</div>
+
+<script>
+/* ===== helpers ===== */
+const $=id=>document.getElementById(id),RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let events=0;const bump=()=>{events++;$('be').textContent=String(events).padStart(6,'0')};
+
+/* ===== reveal + live figure label ===== */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(e=>io.observe(e));
+const fio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const[n,t]=e.target.dataset.fig.split(' · ');$('fig').textContent='FIG. '+n+' — '+t}}),{rootMargin:'-45% 0px -45% 0px'});
+document.querySelectorAll('[data-fig]').forEach(e=>fio.observe(e));
+
+/* ===== card tilt + cursor glow (every .card) ===== */
+document.addEventListener('pointermove',e=>{const c=e.target.closest&&e.target.closest('.card');if(!c)return;
+  const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+  c.style.setProperty('--mx',x*100+'%');c.style.setProperty('--my',y*100+'%');
+  if(!c.classList.contains('orb')){c.style.setProperty('--ry',(x-.5)*12+'deg');c.style.setProperty('--rx',(.5-y)*12+'deg')}});
+document.addEventListener('pointerout',e=>{const c=e.target.closest&&e.target.closest('.card');if(c){c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')}});
+
+/* ===== degree cards expand ===== */
+document.querySelectorAll('.deg').forEach(d=>{const t=()=>d.classList.toggle('open');d.onclick=t;d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}}});
+
+/* ===== orbit system: items = [kind, title, description, ring] ===== */
+const orbits=[];
+function orbit(stageId,detId,items,radii){
+  const st=$(stageId),det=$(detId),nodes=[];
+  radii.forEach(r=>{const g=document.createElement('div');g.className='ring';st.appendChild(g);r.el=g});
+  items.forEach((it,i)=>{
+    const b=document.createElement('button');b.className='card orb k-'+it[0];
+    b.innerHTML='<small>'+it[0]+'</small><b>'+it[1]+'</b>';st.appendChild(b);
+    const ring=it[3],same=items.filter(x=>x[3]===ring),idx=same.indexOf(it);
+    const n={b,ring,a:idx/same.length*6.283+ring,hover:false};nodes.push(n);
+    b.onmouseenter=()=>n.hover=true;b.onmouseleave=()=>n.hover=false;
+    b.onclick=()=>{nodes.forEach(o=>o.b.classList.remove('on'));b.classList.add('on');det.innerHTML='<b>'+it[1]+'</b><br>'+it[2];bump()};
+  });
+  const o={st,nodes,radii,vis:false};orbits.push(o);
+  new IntersectionObserver(e=>o.vis=e[0].isIntersecting).observe(st);
+}
+function tickOrbit(o,dt){
+  const w=o.st.clientWidth,h=o.st.clientHeight,m=w<700;
+  o.radii.forEach((r,i)=>{const rx=r.x*w,ry=r.y*h;r.el.style.width=rx*2+'px';r.el.style.height=ry*2+'px'});
+  o.nodes.forEach(n=>{
+    if(!n.hover&&!RM)n.a+=dt*(n.ring%2?-1:1)*(.00011+n.ring*.00003);
+    const r=o.radii[n.ring],x=Math.cos(n.a)*r.x*w,y=Math.sin(n.a)*r.y*h,z=(Math.sin(n.a)+1)/2;
+    const s=(m?.78:.82)+z*.22+(n.hover?.1:0);
+    n.b.style.transform='translate(-50%,-50%) translate('+x+'px,'+y+'px) scale('+s+')';
+    n.b.style.opacity=.5+z*.5;n.b.style.zIndex=n.hover?20:Math.round(z*10)+2;
+  });
+}
+orbit('st1','d1',[
+ ['Tech','HTML','The structure of every page: headings, links, forms, and meaning for browsers and screen readers.',0],
+ ['Tech','CSS','Layout, colour, type, and motion. It is how a design becomes something people enjoy.',0],
+ ['Tech','JavaScript','Adds behaviour in the browser: menus, animation, live data, and full web apps.',0],
+ ['Tech','PHP','A server-side language that powers countless sites, from blogs to online stores.',1],
+ ['Tech','Web Development','Combining front-end and back-end work into a complete, working product.',1],
+ ['Tech','Websites','The end result: fast, secure, accessible sites people actually want to use.',1]
+],[{x:.27,y:.27},{x:.42,y:.42}]);
+orbit('st2','d2',[
+ ['Skill','Logical Thinking','Turn big problems into small, ordered steps.',0],
+ ['Skill','Problem Solving','Find the cause of the bug, then fix it for good.',0],
+ ['Skill','Critical Thinking','Question the first answer before building on it.',0],
+ ['Value','Creativity','Unique, appealing design ideas that stand out.',1],
+ ['Value','Teamwork','Great sites are built with designers and fellow developers.',1],
+ ['Tech','HTML','The structure beneath every page.',1],
+ ['Tech','CSS','Style, layout, and motion.',1],
+ ['Tech','JavaScript','Interactivity in the browser.',2],
+ ['Tech','PHP','Server-side logic for dynamic sites.',2],
+ ['Challenge','AI Shifts','Tools evolve fast. Keep learning and use AI as a helper.',2],
+ ['Challenge','Saturation','Beginner portfolios look alike. Original work wins.',2],
+ ['Challenge','Security','Performance and cybersecurity are never optional.',1],
+ ['Value','Portfolio','Proof of skill: real, creative projects you can show.',0]
+],[{x:.2,y:.2},{x:.33,y:.33},{x:.46,y:.44}]);
+
+/* ===== cursor-reactive dot field (world-map style density + moving signal band) ===== */
+const cv=$('field'),cx=cv.getContext('2d'),S=24,M={x:-999,y:-999,tx:-999,ty:-999,sp:0};let W,H,pts=[],dpr;
+function size(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);pts=[];
+  for(let y=S/2;y<H+S;y+=S)for(let x=S/2;x<W+S;x+=S)pts.push([x,y])}
+size();addEventListener('resize',size);
+addEventListener('pointermove',e=>{M.sp=Math.hypot(e.clientX-M.tx,e.clientY-M.ty);M.tx=e.clientX;M.ty=e.clientY;bump();
+  $('bx').textContent=(e.clientX/W).toFixed(3);$('by').textContent=(e.clientY/H).toFixed(3)});
+addEventListener('click',bump);
+const tip=$('tip');
+addEventListener('scroll',()=>{const p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);
+  $('prog').style.width=p*100+'%';$('bs').textContent=Math.round(p*100)+'%';bump()},{passive:true});
+
+let last=0;
+function frame(t){
+  const dt=Math.min(t-last,50);last=t;
+  M.x+=(M.tx-M.x)*.14;M.y+=(M.ty-M.y)*.14;M.sp*=.92;
+  cx.clearRect(0,0,W,H);const sc=scrollY*.25;
+  for(const p of pts){
+    let x=p[0],y=p[1];const wy=y+sc;
+    const dens=Math.sin(x*.009+1.3)*Math.sin(wy*.011)+Math.sin(x*.004-wy*.007)*.8; /* continent-like blobs */
+    const band=Math.max(0,1-Math.abs(Math.sin(x*.003+wy*.0045-t*.0003))*5);       /* drifting blue signal band */
+    const dx=x-M.x,dy=y-M.y,d=Math.hypot(dx,dy),k=Math.max(0,1-d/190);
+    if(d>0&&k>0){x+=dx/d*k*k*10;y+=dy/d*k*k*10}
+    const on=dens>-.1,r=(on?1.1:.6)+k*2.4+band*1.1,a=(on?.2:.07)+k*.85+band*.5*(on?1:.4);
+    cx.fillStyle=(k>.04||band>.35)?'rgba(0,'+(150+k*90|0)+',255,'+Math.min(a,1)+')':'rgba(150,170,205,'+a+')';
+    cx.beginPath();cx.arc(x,y,r,0,6.283);cx.fill();
+  }
+  /* tooltip follows the cursor, reads the pointer speed like a "signal" */
+  const st=M.sp>14?'skimming':M.sp>3?'reading closely':'idle';
+  tip.style.transform='translate('+(M.x+18)+'px,'+(M.y+18)+'px)';
+  tip.textContent='SIG-F'+(Math.round(M.tx/40)*7+Math.round(M.ty/40)*3+100)+' · '+st+' · '+Math.min(M.sp/40,1).toFixed(2);
+  /* hero parallax */
+  if(!RM)$('h1').style.transform='translateY('+Math.min(scrollY*.18,160)+'px)';
+  orbits.forEach(o=>o.vis&&tickOrbit(o,dt));
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+orbits.forEach(o=>tickOrbit(o,0));
+</script>
+</body>
+</html>
